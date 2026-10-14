@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.phez.modelo;
-
+import java.util.Date;
 /**
  *
  * @author erick
@@ -18,6 +18,10 @@ public class Usuario {
     private String email;
     private String nit;
     private String password;
+    private String telefono;
+    private String direccion;
+    private String status = "ACTIVO";
+    private Date fechaRegistro;
     
     
     
