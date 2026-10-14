@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author erick
  */
-public class Usuario implements Serializable {
+public class Usuario implements Serializable{
     
     public static final int MAX_INTENTOS = 5;
     
@@ -28,18 +28,18 @@ public class Usuario implements Serializable {
     private int idRol;
     private String rol;
     private int totalpedidos;
-
+    
     public String getNombreCompleto() { return nombre + " " + apellido;}
     public boolean isActivo() {return "ACTIVO".equals(status);}
     public boolean isBloqueado() {return intentosFallidos >= MAX_INTENTOS;}
     public boolean isAdmin() { return "VENDEDOR".equals(rol);}
     public boolean isVendedor() { return "VENDEDOR".equals(rol); }
     public boolean isPersonal() {return isAdmin() || isVendedor();}
-
+    
     public int getIdUsuario() {
         return idUsuario;
     }
-    
+
     public String getNombre() {
         return nombre;
     }
