@@ -8,10 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-
-
 public class Carrito implements Serializable {
     
     public static final BigDecimal TASA_IVA = new BigDecimal ("1.12");

@@ -2,7 +2,6 @@ package com.phez.modelo;
 
 import java.io.Serializable;
 
-
 public class Categoria implements Serializable {
     
     private int idCategoria;
