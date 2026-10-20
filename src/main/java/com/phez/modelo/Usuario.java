@@ -27,7 +27,7 @@ public class Usuario implements Serializable{
     private int intentosFallidos;
     private int idRol;
     private String rol;
-    private int totalpedidos;
+    private int totalPedidos;
     
     public String getNombreCompleto() { return nombre + " " + apellido;}
     public boolean isActivo() {return "ACTIVO".equals(status);}
@@ -88,8 +88,8 @@ public class Usuario implements Serializable{
         return rol;
     }
 
-    public int getTotalpedidos() {
-        return totalpedidos;
+    public int getTotalPedidos() {
+        return totalPedidos;
     }
     
 
@@ -145,8 +145,8 @@ public class Usuario implements Serializable{
         this.rol = rol;
     }
 
-    public void setTotalpedidos(int totalpedidos) {
-        this.totalpedidos = totalpedidos;
+    public void setTotalPedidos(int totalpedidos) {
+        this.totalPedidos = totalpedidos;
     }
      
 }
