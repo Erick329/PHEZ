@@ -1,87 +1,60 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package com.phez.controlador;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import com.phez.modelo.Carrito;
+import com.phez.modelo.Usuario;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.SQLException;
 
-/**
- *
- * @author erick
- */
-@WebServlet(name = "BaseServlet", urlPatterns = {"/BaseServlet"})
 public class BaseServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void vista(HttpServletRequest req, HttpServletResponse resp, String vista, String titulo)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet BaseServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet BaseServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        req.setAttribute("titulo", titulo);
+        req.getRequestDispatcher("/WEB-INF/VISTAS/" + vista + ".jsp").forward(req, resp);
+    }
+    
+    protected void redirigir(HttpServletRequest req, HttpServletResponse resp, String ruta) throws IOException {
+        resp.sendRedirect(req.getContextPath() + ruta);
+    }
+    
+    protected Usuario usuario(HttpServletRequest req) {
+        return (Usuario) req.getSession().getAttribute("Usuario");
+    }
+    
+    protected Carrito carrito(HttpServletRequest req) {
+        HttpSession s = req.getSession();
+        Carrito c = (Carrito) s.getAttribute("carrito");
+        if (c== null) {
+            c = new Carrito();
+            s.setAttribute ("carrito", c);
         }
+        return c;
     }
+    
+protected void exito(HttpServletRequest req, String msg) { req.getSession().setAttribute("flashOk", msg); }
+protected void error(HttpServletRequest req, String msg) { req.getSession().setAttribute("flashError", msg); }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+protected String rutaSegura(String ruta, String porDefecto) {
+    if (ruta == null || !ruta.startsWith("/") || ruta.startsWith("//") || ruta.contains("\\")) return porDefecto;
+    return ruta;
 }
+
+protected String ip(HttpServletRequest req) { return req.getRemoteAddr(); }
+
+protected Integer idUsuario(HttpServletRequest req) {
+    Usuario u = usuario(req);
+    return u == null ? null : u.getIdUsuario();
+}
+
+protected void errorBD(HttpServletRequest req, HttpServletResponse resp, SQLException e) throws IOException {
+    log("Error de base de datos", e);
+    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+            "No es posible conectarse a la base de datos. Verificar que MYSQL está iniciado y la configuración en db.properties.");
+}
+}
+   
