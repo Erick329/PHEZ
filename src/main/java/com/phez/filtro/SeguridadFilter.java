@@ -1,13 +1,44 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.phez.filtro;
+        
+import com.phez.util.Seguridad;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
 
-/**
- *
- * @author erick
- */
-public class SeguridadFilter {
-    
+public class SeguridadFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+
+        resp.setHeader("X-Content-Type-Options", "nosniff");
+        resp.setHeader("X-Frame-Options", "DENY");
+        resp.setHeader("Referrer-Policy", "same-origin");
+        resp.setHeader("Content-Security-Policy",
+                "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
+              + "font-src 'self'; img-src 'self' data: https:; frame-ancestors 'none'");
+
+        String ruta = req.getServletPath();
+        boolean estatico = ruta.startsWith("/css/") || ruta.startsWith("/js/") || ruta.startsWith("/img/") || ruta.startsWith("/lib/");
+        if (!estatico) {
+            HttpSession sesion = req.getSession(true);
+            if (sesion.getAttribute("csrf") == null) sesion.setAttribute("csrf", Seguridad.token(24));
+
+            if ("POST".equalsIgnoreCase(req.getMethod())) {
+                String enviado = req.getParameter("csrf");
+                if (enviado == null || !enviado.equals(sesion.getAttribute("csrf"))) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Solicitud no válida (token CSRF). Recargue la página e intente de nuevo.");
+                    return;
+                }
+            }
+        }
+        chain.doFilter(request, response);
+    }
 }
