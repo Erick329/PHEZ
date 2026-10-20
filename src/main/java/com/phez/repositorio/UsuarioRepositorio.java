@@ -26,7 +26,7 @@ public class UsuarioRepositorio {
         return uno(SELECT_BASE + "WHERE u.idUsuario = ?", id);
     }
 
-    public boolean existEmail(String email) throws SQLException {
+    public boolean existeEmail(String email) throws SQLException {
         try (Connection con = ConexionBD.getConnection(); PreparedStatement ps = con.prepareStatement("SELECT 1 FROM Usuarios WHERE email = ?")) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
@@ -35,7 +35,7 @@ public class UsuarioRepositorio {
         }
     }
 
-    public int regitrarCliente(Usuario user) throws SQLException {
+    public int registrarCliente(Usuario user) throws SQLException {
         String sql = "INSERT INTO Usuarios (nombre, apellido, email, nit, password, telefono, direccion, idRol)"
                 + "Values (?, ?, ?, ?, ?, ?, ?, (SELECT idRol FROM Roles WHERE nombre = 'CLIENTE'))";
         try (Connection con = ConexionBD.getConnection(); PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

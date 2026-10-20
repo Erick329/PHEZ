@@ -63,14 +63,14 @@ public class Carrito implements Serializable {
     }
     
     public BigDecimal getCostoEnvio() {
-        if (isVacio() || getSubtotal().compareTo(ENVIO_GRATIS_DESDE) >= 0) return BigDecimal.ZERO.setScale(2);
+        if (isVacio() || getSubtotal().compareTo(COSTO_GRATIS_DESDE) >= 0) return BigDecimal.ZERO.setScale(2);
         return COSTO_ENVIO;      
     }
     
     public BigDecimal getTotal() { return getSubtotal().add(getCostoEnvio ()); }
     
     public BigDecimal getFaltaParaEnvioGratis() {
-        BigDecimal falta = ENVIO_GRATIS_DESDE.subtract(getSubtotal ());
+        BigDecimal falta = COSTO_GRATIS_DESDE.subtract(getSubtotal ());
         return falta.signum()> 0 ? falta : BigDecimal.ZERO;
     }
         

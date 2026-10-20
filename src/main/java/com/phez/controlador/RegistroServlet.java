@@ -1,6 +1,6 @@
 package com.phez.controlador;
 
-import com.phez.dao.UsuarioRepositorio;
+import com.phez.repositorio.UsuarioRepositorio;
 import com.phez.modelo.Usuario;
 import com.phez.util.Seguridad;
 import com.phez.util.Validador;
