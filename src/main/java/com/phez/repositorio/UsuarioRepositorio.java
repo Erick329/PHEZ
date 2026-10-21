@@ -16,7 +16,7 @@ import java.util.List;
 public class UsuarioRepositorio {
 
     private static final String SELECT_BASE
-            = "SELECT u.*, r.nombre AS rol FROM Usuarios u JOIN Roles r ON r.idRol = u.idRol";
+            = "SELECT u.*, r.nombre AS rol FROM Usuarios u JOIN Roles r ON r.idRol = u.idRol ";
 
     public Usuario buscarPorEmail(String email) throws SQLException {
         return uno(SELECT_BASE + "WHERE u.email = ?", email);
@@ -75,7 +75,6 @@ public class UsuarioRepositorio {
         ejecutar("UPDATE Usuarios SET intentosFallidos = 0 WHERE idUsuario = ?", idUsuario);
     }
 
-    /** status = 'ACTIVO' o 'INACTIVO'. */
     public void cambiarStatus(int idUsuario, String status) throws SQLException {
         try (Connection cn = ConexionBD.getConnection();
              PreparedStatement ps = cn.prepareStatement("UPDATE Usuarios SET status = ? WHERE idUsuario = ?")) {
@@ -85,7 +84,6 @@ public class UsuarioRepositorio {
         }
     }
 
-    /** Lista usuarios (rol null = todos) con su número de pedidos. */
     public List<Usuario> listar(String rol) throws SQLException {
         String sql = "SELECT u.*, r.nombre AS rol, "
                    + "(SELECT COUNT(*) FROM Pedidos p WHERE p.idUsuario = u.idUsuario) AS totalPedidos "

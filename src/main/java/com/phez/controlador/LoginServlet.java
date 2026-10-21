@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 
 
-@WebServlet("/Login")
+@WebServlet("/login")
 public class LoginServlet extends BaseServlet {
     
      private final UsuarioRepositorio usuarioRepositorio = new UsuarioRepositorio();
@@ -25,7 +25,7 @@ public class LoginServlet extends BaseServlet {
             return;
         }
         req.setAttribute("next", rutaSegura(req.getParameter("next"), ""));
-        vista(req, resp, "publico/login", "Iniciar sesión");
+        vista(req, resp, "general/login", "Iniciar sesión");
         return;
     }
     @Override
@@ -54,16 +54,17 @@ public class LoginServlet extends BaseServlet {
                 req.setAttribute("error", mensaje);
                 req.setAttribute("email", email);
                 req.setAttribute("next", next);
-                vista (req, resp, "publico/login", "Iniciar sesión");
+                vista (req, resp, "general/login", "Iniciar sesión");
                 return;
             }
             
             usuarioRepositorio.reiniciarIntentos(u.getIdUsuario());
             u.setPassword(null);
+            req.changeSessionId();
             req.getSession().setAttribute("usuario", u);
             
             if (!next.isEmpty()) redirigir(req, resp, next);
-            else if (u.isPersonal()) redirigir(req, resp, next);
+            else if (u.isPersonal()) redirigir(req, resp, "/admin/dashboard");
             else redirigir(req, resp, "/inicio");
         } catch (SQLException e) {
             errorBD(req,resp, e);

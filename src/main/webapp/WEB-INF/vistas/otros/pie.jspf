@@ -4,11 +4,11 @@
     <div class="container d-flex flex-column flex-md-row justify-content-between gap-2 small">
         <div>&copy; 2026 PHEZ Venta Alimentos de Calidad<br>
             <span class="opacity-75">Proyecto Final Programación II</span></div>
-        <div class="text-md-end"><i class="bi bi-shield-lock"></i> Compra segura · <i class="bi bi-telephone"></i> 5555-0000<br>
+        <div class="text-md-end"><i class="bi bi-shield-lock"></i> Compra segura · <i class="bi bi-telephone"></i> 5655-5685<br>
             <span class="opacity-75">Envío gratis en compras desde Q 200.00</span></div>
     </div>
 </footer>
-<script src="${ctx}/lib/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="${ctx}/js/app.js"></script>
+<script src="${raiz}/lib/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="${raiz}/js/app.js"></script>
 </body>
 </html>

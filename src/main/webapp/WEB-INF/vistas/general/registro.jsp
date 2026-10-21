@@ -4,7 +4,7 @@
     Author     : erick
 --%>
 
-<%@ include file="/WEB-INF/vistas/comun/encabezado.jspf" %>
+<%@ include file="/WEB-INF/vistas/otros/encabezado.jspf" %>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-7">
@@ -14,7 +14,7 @@
                 <c:if test="${not empty errores}">
                     <div class="alert alert-danger small"><ul class="mb-0"><c:forEach var="e" items="${errores}"><li><c:out value="${e}"/></li></c:forEach></ul></div>
                 </c:if>
-                <form method="post" action="${ctx}/registro">
+                <form method="post" action="${raiz}/registro">
                     <input type="hidden" name="csrf" value="${sessionScope.csrf}">
                     <input type="hidden" name="next" value="<c:out value='${next}'/>">
                     <div class="row g-3">
@@ -39,10 +39,10 @@
                     </div>
                     <button class="btn btn-verde w-100 mt-4">Crear cuenta</button>
                 </form>
-                <p class="text-center small mt-3 mb-0">¿Ya tiene cuenta? <a href="${ctx}/login">Inicie sesión</a></p>
+                <p class="text-center small mt-3 mb-0">¿Ya tiene cuenta? <a href="${raiz}/login">Inicie sesión</a></p>
             </div>
         </div>
     </div>
 </div>
-<%@ include file="/WEB-INF/vistas/comun/pie.jspf" %>
+<%@ include file="/WEB-INF/vistas/otros/pie.jspf" %>
 

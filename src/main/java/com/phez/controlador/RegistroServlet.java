@@ -21,7 +21,7 @@ public class RegistroServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("next", rutaSegura(req.getParameter("next"), ""));
-        vista(req, resp, "publico/registro", "Crear cuenta");
+        vista(req, resp, "general/registro", "Crear cuenta");
     }
     
     @Override
@@ -54,7 +54,7 @@ public class RegistroServlet extends BaseServlet {
                 req.setAttribute("errores", errores);
                 req.setAttribute("form", u);
                 req.setAttribute("next", next);
-                vista(req, resp, "publico/registro", "Crear cuenta");
+                vista(req, resp, "general/registro", "Crear cuenta");
                 return;
             }
             u.setPassword(Seguridad.hashPassword(password));
