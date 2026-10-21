@@ -1,6 +1,6 @@
 package com.phez.controlador;
 
-import com.phez.dao.UsuarioRepositorio;
+import com.phez.repositorio.UsuarioRepositorio;
 import com.phez.modelo.Usuario;
 import com.phez.util.Seguridad;
 import com.phez.util.Validador;
@@ -13,10 +13,10 @@ import java.sql.SQLException;
 
 
 
-@WebServlet("/Login")
+@WebServlet("/login")
 public class LoginServlet extends BaseServlet {
     
-     private final UsuarioRespositorio usuarioRepositorio = new UsuarioRepositorio();
+     private final UsuarioRepositorio usuarioRepositorio = new UsuarioRepositorio();
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,7 +25,7 @@ public class LoginServlet extends BaseServlet {
             return;
         }
         req.setAttribute("next", rutaSegura(req.getParameter("next"), ""));
-        vista(req, resp, "publico/login", "Iniciar sesión");
+        vista(req, resp, "general/login", "Iniciar sesión");
         return;
     }
     @Override
@@ -34,7 +34,7 @@ public class LoginServlet extends BaseServlet {
         String password = req.getParameter("password");
         String next = rutaSegura(req.getParameter("next"), "");
         try {
-            Usuario u = usuarioRespositorio.buscarPorEmail(email);
+            Usuario u = usuarioRepositorio.buscarPorEmail(email);
             String mensaje = null;
             if (u == null) {
                 mensaje = "Correo o contraseña incorrectos. ";
@@ -54,19 +54,20 @@ public class LoginServlet extends BaseServlet {
                 req.setAttribute("error", mensaje);
                 req.setAttribute("email", email);
                 req.setAttribute("next", next);
-                vista (req, resp, "publico/login", "Iniciar sesión");
+                vista (req, resp, "general/login", "Iniciar sesión");
                 return;
             }
             
             usuarioRepositorio.reiniciarIntentos(u.getIdUsuario());
             u.setPassword(null);
+            req.changeSessionId();
             req.getSession().setAttribute("usuario", u);
             
             if (!next.isEmpty()) redirigir(req, resp, next);
-            else if (u.isPersonal()) redirigir(req, resp, next);
+            else if (u.isPersonal()) redirigir(req, resp, "/admin/dashboard");
             else redirigir(req, resp, "/inicio");
         } catch (SQLException e) {
-            erroBD(req,resp, e);
+            errorBD(req,resp, e);
         }
     }
 }

@@ -18,10 +18,10 @@ public class DetallePedido implements Serializable {
     public void setIdDetalle(int idDetalle) { this.idDetalle = idDetalle; }
     public int getIdPedido() {return idPedido; }
     public void setIdPedido (int idPedido) {this.idPedido = idPedido; }
-    public int setIdProducto() {return idProducto; }
+    public int getIdProducto() {return idProducto; }
     public void setIdProducto(int idProducto) {this.idProducto = idProducto; }
     public String getProductoNombre() {return productoNombre; }
-    public void setPrductoNombre(String productoNombre) {this.productoNombre = productoNombre; }
+    public void setProductoNombre(String productoNombre) {this.productoNombre = productoNombre; }
     public String getProductoCodigo() { return productoCodigo; }
     public void setProductoCodigo(String productoCodigo) { this.productoCodigo = productoCodigo; }
     public int getCantidad() { return cantidad; }

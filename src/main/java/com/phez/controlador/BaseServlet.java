@@ -15,7 +15,7 @@ public class BaseServlet extends HttpServlet {
     protected void vista(HttpServletRequest req, HttpServletResponse resp, String vista, String titulo)
             throws ServletException, IOException {
         req.setAttribute("titulo", titulo);
-        req.getRequestDispatcher("/WEB-INF/VISTAS/" + vista + ".jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/vistas/" + vista + ".jsp").forward(req, resp);
     }
     
     protected void redirigir(HttpServletRequest req, HttpServletResponse resp, String ruta) throws IOException {

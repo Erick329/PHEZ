@@ -12,7 +12,7 @@ import org.mindrot.jbcrypt.BCrypt;
  *
  * @author erick
  */
-public class Seguridad {
+public final class Seguridad {
 
     private static final SecureRandom SECURE = new SecureRandom();
 
