@@ -23,7 +23,7 @@ public class BaseServlet extends HttpServlet {
     }
     
     protected Usuario usuario(HttpServletRequest req) {
-        return (Usuario) req.getSession().getAttribute("Usuario");
+        return (Usuario) req.getSession().getAttribute("usuario");
     }
     
     protected Carrito carrito(HttpServletRequest req) {
