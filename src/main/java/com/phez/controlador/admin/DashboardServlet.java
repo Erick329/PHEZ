@@ -1,9 +1,9 @@
 package com.phez.controlador.admin;
 
 import com.phez.controlador.BaseServlet;
-import com.phez.modelo.Pedido;
-import com.phez.modelo.Producto;
-import com.phez.modelo.Reporte;
+import com.phez.repositorio.PedidoRepositorio;
+import com.phez.repositorio.ProductoRepositorio;
+import com.phez.repositorio.ReporteRepositorio;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,9 +15,9 @@ import java.time.LocalDate;
 @WebServlet("/admin/dashboard")
 public class DashboardServlet extends BaseServlet {
 
-    private final Reporte reporte = new Reporte();
-    private final Pedido pedido = new Pedido();
-    private final Producto producto = new Producto();
+    private final ReporteRepositorio reporte = new ReporteRepositorio();
+    private final PedidoRepositorio pedido = new PedidoRepositorio();
+    private final ProductoRepositorio producto = new ProductoRepositorio();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

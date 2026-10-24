@@ -1,6 +1,6 @@
 package com.phez.repositorio;
 
-import com.phez.modelo.FilaReporte;
+import com.phez.modelo.Reporte;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class ReporteRepositorio {
         String sql = "SELECT COUNT(*) AS pedidos, COALESCE(SUM(pe.total), 0) AS ventas, "
                    + "COALESCE(AVG(pe.total), 0) AS ticket, COUNT(DISTINCT pe.idUsuario) AS clientes "
                    + "FROM Pedidos pe WHERE " + VENTA_VALIDA;
-        try (Connection cn = ConexionBD.getConexion();
+        try (Connection cn = ConexionBD.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
             fechas(ps, 1, desde, hasta);
             try (ResultSet rs = ps.executeQuery()) {
@@ -39,7 +39,7 @@ public class ReporteRepositorio {
         return r;
     }
 
-    public List<FilaReporte> ventasPorPeriodo(LocalDate desde, LocalDate hasta) throws SQLException {
+    public List<Reporte> ventasPorPeriodo(LocalDate desde, LocalDate hasta) throws SQLException {
         boolean porDia = desde.plusDays(45).isAfter(hasta);
         String formato = porDia ? "%Y-%m-%d" : "%Y-%m";
         String sql = "SELECT DATE_FORMAT(pe.fechaPedido, '" + formato + "') AS periodo, SUM(pe.total) AS monto, COUNT(*) AS cant "
@@ -48,7 +48,7 @@ public class ReporteRepositorio {
         return lista(sql, desde, hasta);
     }
 
-    public List<FilaReporte> topProductos(LocalDate desde, LocalDate hasta) throws SQLException {
+    public List<Reporte> topProductos(LocalDate desde, LocalDate hasta) throws SQLException {
         String sql = "SELECT p.nombre AS periodo, SUM(d.subtotal) AS monto, SUM(d.cantidad) AS cant "
                    + "FROM DetallePedido d JOIN Productos p ON p.idProducto = d.idProducto "
                    + "JOIN Pedidos pe ON pe.idPedido = d.idPedido WHERE " + VENTA_VALIDA
@@ -56,7 +56,7 @@ public class ReporteRepositorio {
         return lista(sql, desde, hasta);
     }
 
-    public List<FilaReporte> bajaRotacion(LocalDate desde, LocalDate hasta) throws SQLException {
+    public List<Reporte> bajaRotacion(LocalDate desde, LocalDate hasta) throws SQLException {
         String sql = "SELECT p.nombre AS periodo, p.stock AS monto, "
                    + "(SELECT COALESCE(SUM(d.cantidad), 0) FROM DetallePedido d JOIN Pedidos pe ON pe.idPedido = d.idPedido "
                    + " WHERE d.idProducto = p.idProducto AND " + VENTA_VALIDA + ") AS cant "
@@ -64,7 +64,7 @@ public class ReporteRepositorio {
         return lista(sql, desde, hasta);
     }
 
-    public List<FilaReporte> ventasPorCategoria(LocalDate desde, LocalDate hasta) throws SQLException {
+    public List<Reporte> ventasPorCategoria(LocalDate desde, LocalDate hasta) throws SQLException {
         String sql = "SELECT c.nombre AS periodo, SUM(d.subtotal) AS monto, SUM(d.cantidad) AS cant "
                    + "FROM DetallePedido d JOIN Productos p ON p.idProducto = d.idProducto "
                    + "JOIN Categorias c ON c.idCategoria = p.idCategoria "
@@ -73,28 +73,28 @@ public class ReporteRepositorio {
         return lista(sql, desde, hasta);
     }
 
-    public List<FilaReporte> clientesFrecuentes(LocalDate desde, LocalDate hasta) throws SQLException {
+    public List<Reporte> clientesFrecuentes(LocalDate desde, LocalDate hasta) throws SQLException {
         String sql = "SELECT CONCAT(u.nombre, ' ', u.apellido) AS periodo, SUM(pe.total) AS monto, COUNT(*) AS cant "
                    + "FROM Pedidos pe JOIN Usuarios u ON u.idUsuario = pe.idUsuario WHERE " + VENTA_VALIDA
                    + "GROUP BY u.idUsuario, u.nombre, u.apellido ORDER BY monto DESC LIMIT 10";
         return lista(sql, desde, hasta);
     }
 
-    public List<FilaReporte> pedidosPorEstado(LocalDate desde, LocalDate hasta) throws SQLException {
+    public List<Reporte> pedidosPorEstado(LocalDate desde, LocalDate hasta) throws SQLException {
         String sql = "SELECT pe.status AS periodo, SUM(pe.total) AS monto, COUNT(*) AS cant FROM Pedidos pe "
                    + "WHERE pe.fechaPedido >= ? AND pe.fechaPedido < ? GROUP BY pe.status ORDER BY cant DESC";
         return lista(sql, desde, hasta);
     }
 
-    private List<FilaReporte> lista(String sql, LocalDate desde, LocalDate hasta) throws SQLException {
-        List<FilaReporte> filas = new ArrayList<>();
-        try (Connection cn = ConexionBD.getConexion();
+    private List<Reporte> lista(String sql, LocalDate desde, LocalDate hasta) throws SQLException {
+        List<Reporte> filas = new ArrayList<>();
+        try (Connection cn = ConexionBD.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
             int n = contar(sql);
             for (int i = 0; i < n; i += 2) fechas(ps, i + 1, desde, hasta);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    filas.add(new FilaReporte(rs.getString("periodo"), rs.getBigDecimal("monto"), rs.getLong("cant")));
+                    filas.add(new Reporte(rs.getString("periodo"), rs.getBigDecimal("monto"), rs.getLong("cant")));
                 }
             }
         }
@@ -102,7 +102,7 @@ public class ReporteRepositorio {
     }
 
     private long escalar(String sql, LocalDate desde, LocalDate hasta) throws SQLException {
-        try (Connection cn = ConexionBD.getConexion();
+        try (Connection cn = ConexionBD.getConnection();
              PreparedStatement ps = cn.prepareStatement(sql)) {
             fechas(ps, 1, desde, hasta);
             try (ResultSet rs = ps.executeQuery()) {
