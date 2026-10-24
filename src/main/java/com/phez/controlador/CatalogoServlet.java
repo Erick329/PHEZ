@@ -26,7 +26,7 @@ public class CatalogoServlet extends BaseServlet {
             req.setAttribute("categorias", categoriaRepositorio.listar(true));
             req.setAttribute("categoriaSel", categoria);
             req.setAttribute("q", q);
-            vista(req, resp, "publico/catalogo", "Catálogo");
+            vista(req, resp, "general/catalogo", "Catálogo");
         } catch (SQLException e) {
             errorBD(req, resp, e);
         }

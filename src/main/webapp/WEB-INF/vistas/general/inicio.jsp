@@ -7,7 +7,7 @@
             <p class="lead mb-3">Compra en línea de forma segura y recibe tu pedido en Portales y alrededores.</p>
             <a href="${raiz}/catalogo" class="btn btn-naranja btn-lg">Ver catálogo</a>
         </div>
-        <div class="hero-iconos d-none d-md-block">🥑🌽🥛</div>
+        <div class="hero-iconos d-none d-md-block">🍊🥛 🧀 🥑 🌾</div>
     </section>
 
     <div class="d-flex flex-wrap gap-2 mb-4">

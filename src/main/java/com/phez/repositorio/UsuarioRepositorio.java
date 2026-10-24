@@ -140,5 +140,15 @@ public class UsuarioRepositorio {
         u.setRol(rs.getString("rol"));
         return u;
     }
+    
+    public void cambiarRol(int idUsuario, String rol) throws SQLException {
+    String sql = "UPDATE Usuarios SET idRol = (SELECT idRol FROM Roles WHERE nombre = ?) WHERE idUsuario = ?";
+    try (Connection cn = ConexionBD.getConnection();
+         PreparedStatement ps = cn.prepareStatement(sql)) {
+        ps.setString(1, rol);
+        ps.setInt(2, idUsuario);
+        ps.executeUpdate();
+    }
+}
 
 }
