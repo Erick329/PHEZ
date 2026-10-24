@@ -1,0 +1,18 @@
+package com.phez.servicio;
+
+import com.phez.modelo.Pedido;
+import com.phez.modelo.Usuario;
+
+
+public class CorreoService {
+    
+    public void enviarConfirmacion (Usuario u, Pedido p) {
+        System.out.println("========== CORREO SIMULADO ==========");
+        System.out.println("Para: " + u.getEmail());
+        System.out.println("Asunto: Confirmación de su pedido #" + p.getIdPedido());
+        System.out.println("Hola " + u.getNombre() + ", recibimos su pedido por Q" + p.getTotal()
+                + ". Estado: " + p.getEstado() + ". ¡Gracias por su compra!");
+        System.out.println("=====================================");
+    }
+    
+}
