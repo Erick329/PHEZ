@@ -4,6 +4,7 @@
  */
 package com.phez.modelo;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 /**
  *
  * @author erick
@@ -52,6 +53,10 @@ public class Reporte {
 
     public void setCantidad(long cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Object resumen(LocalDate hoy, LocalDate hoy0) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     
