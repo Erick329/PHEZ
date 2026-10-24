@@ -20,7 +20,7 @@ public class InicioServlet extends BaseServlet {
         try {
             req.setAttribute("destacados", productoRepositorio.destacados(8));
             req.setAttribute("categorias", categoriaRepositorio.listar(true));
-            vista(req, resp, "publico/inicio", "Inicio");
+            vista(req, resp, "general/inicio", "Inicio");
         } catch (SQLException e) {
             errorBD(req, resp, e);
         }

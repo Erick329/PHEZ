@@ -27,7 +27,7 @@ public class ProductoServlet extends BaseServlet {
             req.setAttribute("relacionados", productoRepositorio.listar(p.getIdCategoria(), null, true)
                     .stream().filter(x -> x.getIdProducto() != p.getIdProducto()).limit(4).toList());
             req.setAttribute("enCarrito", carrito(req).cantidadDe(p.getIdProducto()));
-            vista(req, resp, "publico/producto", p.getNombre());
+            vista(req, resp, "general/producto", p.getNombre());
         } catch (SQLException e) {
             errorBD(req, resp, e);
         }

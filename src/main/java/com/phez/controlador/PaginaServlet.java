@@ -13,9 +13,9 @@ public class PaginaServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getServletPath().equals("/nosotros")) {
-            vista(req, resp, "publico/nosotros", "Nosotros");
+            vista(req, resp, "general/nosotros", "Nosotros");
         } else {
-            vista(req, resp, "publico/contacto", "Contacto");
+            vista(req, resp, "general/contacto", "Contacto");
         }
     }
 
@@ -29,7 +29,7 @@ public class PaginaServlet extends BaseServlet {
             req.setAttribute("nombre", nombre);
             req.setAttribute("email", email);
             req.setAttribute("mensaje", mensaje);
-            vista(req, resp, "publico/contacto", "Contacto");
+            vista(req, resp, "general/contacto", "Contacto");
             return;
         }
         System.out.println("[Contacto] " + nombre + " <" + email + ">: " + mensaje);
