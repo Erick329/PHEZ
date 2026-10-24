@@ -32,7 +32,7 @@ public class Usuario implements Serializable{
     public String getNombreCompleto() { return nombre + " " + apellido;}
     public boolean isActivo() {return "ACTIVO".equals(status);}
     public boolean isBloqueado() {return intentosFallidos >= MAX_INTENTOS;}
-    public boolean isAdmin() { return "VENDEDOR".equals(rol);}
+    public boolean isAdmin() { return "ADMIN".equals(rol);}
     public boolean isVendedor() { return "VENDEDOR".equals(rol); }
     public boolean isPersonal() {return isAdmin() || isVendedor();}
     
