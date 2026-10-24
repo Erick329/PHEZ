@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import com.phez.repositorio.LoteRepositorio;
 
 @WebServlet("/admin/dashboard")
 public class DashboardServlet extends BaseServlet {
@@ -18,6 +19,7 @@ public class DashboardServlet extends BaseServlet {
     private final ReporteRepositorio reporte = new ReporteRepositorio();
     private final PedidoRepositorio pedido = new PedidoRepositorio();
     private final ProductoRepositorio producto = new ProductoRepositorio();
+    private final LoteRepositorio lote = new LoteRepositorio();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,7 +29,7 @@ public class DashboardServlet extends BaseServlet {
             req.setAttribute("mes", reporte.resumen(hoy.minusDays(29), hoy));
             req.setAttribute("recientes", pedido.listar(null, 8));
             req.setAttribute("bajoStock", producto.bajoStock());
-            req.setAttribute("porVencer", new com.phez.modelo.Lote().proximosAVencer(15));
+            req.setAttribute("porVencer", lote.proximosAVencer(15));
             req.setAttribute("porAtender", pedido.listar("PAGADO", 50).size() + pedido.listar("PENDIENTE", 50).size());
             vista(req, resp, "admin/dashboard", "Dashboard");
         } catch (SQLException e) {
