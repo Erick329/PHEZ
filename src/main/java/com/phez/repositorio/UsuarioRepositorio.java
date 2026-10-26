@@ -66,8 +66,8 @@ public class UsuarioRepositorio {
             ps.executeUpdate();
         }
     }
-    
-        public void registrarIntentoFallido(int idUsuario) throws SQLException {
+
+    public void registrarIntentoFallido(int idUsuario) throws SQLException {
         ejecutar("UPDATE Usuarios SET intentosFallidos = intentosFallidos + 1 WHERE idUsuario = ?", idUsuario);
     }
 
@@ -76,8 +76,7 @@ public class UsuarioRepositorio {
     }
 
     public void cambiarStatus(int idUsuario, String status) throws SQLException {
-        try (Connection cn = ConexionBD.getConnection();
-             PreparedStatement ps = cn.prepareStatement("UPDATE Usuarios SET status = ? WHERE idUsuario = ?")) {
+        try (Connection cn = ConexionBD.getConnection(); PreparedStatement ps = cn.prepareStatement("UPDATE Usuarios SET status = ? WHERE idUsuario = ?")) {
             ps.setString(1, status);
             ps.setInt(2, idUsuario);
             ps.executeUpdate();
@@ -86,14 +85,15 @@ public class UsuarioRepositorio {
 
     public List<Usuario> listar(String rol) throws SQLException {
         String sql = "SELECT u.*, r.nombre AS rol, "
-                   + "(SELECT COUNT(*) FROM Pedidos p WHERE p.idUsuario = u.idUsuario) AS totalPedidos "
-                   + "FROM Usuarios u JOIN Roles r ON r.idRol = u.idRol "
-                   + (rol == null ? "" : "WHERE r.nombre = ? ")
-                   + "ORDER BY u.fechaRegistro DESC";
+                + "(SELECT COUNT(*) FROM Pedidos p WHERE p.idUsuario = u.idUsuario) AS totalPedidos "
+                + "FROM Usuarios u JOIN Roles r ON r.idRol = u.idRol "
+                + (rol == null ? "" : "WHERE r.nombre = ? ")
+                + "ORDER BY u.fechaRegistro DESC";
         List<Usuario> lista = new ArrayList<>();
-        try (Connection cn = ConexionBD.getConnection();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
-            if (rol != null) ps.setString(1, rol);
+        try (Connection cn = ConexionBD.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            if (rol != null) {
+                ps.setString(1, rol);
+            }
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Usuario u = mapear(rs);
@@ -106,8 +106,7 @@ public class UsuarioRepositorio {
     }
 
     private Usuario uno(String sql, Object param) throws SQLException {
-        try (Connection cn = ConexionBD.getConnection();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
+        try (Connection cn = ConexionBD.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setObject(1, param);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() ? mapear(rs) : null;
@@ -116,8 +115,7 @@ public class UsuarioRepositorio {
     }
 
     private void ejecutar(String sql, int id) throws SQLException {
-        try (Connection cn = ConexionBD.getConnection();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
+        try (Connection cn = ConexionBD.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
@@ -140,15 +138,32 @@ public class UsuarioRepositorio {
         u.setRol(rs.getString("rol"));
         return u;
     }
-    
+
     public void cambiarRol(int idUsuario, String rol) throws SQLException {
-    String sql = "UPDATE Usuarios SET idRol = (SELECT idRol FROM Roles WHERE nombre = ?) WHERE idUsuario = ?";
-    try (Connection cn = ConexionBD.getConnection();
-         PreparedStatement ps = cn.prepareStatement(sql)) {
-        ps.setString(1, rol);
-        ps.setInt(2, idUsuario);
-        ps.executeUpdate();
+        String sql = "UPDATE Usuarios SET idRol = (SELECT idRol FROM Roles WHERE nombre = ?) WHERE idUsuario = ?";
+        try (Connection cn = ConexionBD.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setString(1, rol);
+            ps.setInt(2, idUsuario);
+            ps.executeUpdate();
+        }
     }
-}
+
+    public void cambiarRol(int idUsuario, int idRol) throws SQLException {
+        String sql = "UPDATE Usuarios SET idRol = ? WHERE idUsuario = ?";
+        try (Connection cn = ConexionBD.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, idRol);
+            ps.setInt(2, idUsuario);
+            ps.executeUpdate();
+        }
+    }
+
+    public void actualizarPassword(int idUsuario, String hash) throws SQLException {
+        String sql = "UPDATE Usuarios SET password = ?, intentosFallidos = 0 WHERE idUsuario = ?";
+        try (Connection cn = ConexionBD.getConnection(); PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setString(1, hash);
+            ps.setInt(2, idUsuario);
+            ps.executeUpdate();
+        }
+    }
 
 }

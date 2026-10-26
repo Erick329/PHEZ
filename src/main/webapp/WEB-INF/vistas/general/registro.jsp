@@ -3,7 +3,6 @@
     Created on : 18 oct 2026, 16:25:00
     Author     : erick
 --%>
-
 <%@ include file="/WEB-INF/vistas/otros/encabezado.jspf" %>
 <div class="container">
     <div class="row justify-content-center">
@@ -28,14 +27,14 @@
                             <input name="telefono" class="form-control" maxlength="20" placeholder="5555-5555" value="<c:out value='${form.telefono}'/>"></div>
                         <div class="col-md-6"><label class="form-label">NIT</label>
                             <input name="nit" class="form-control" maxlength="20" placeholder="1234567-8 o CF" value="<c:out value='${form.nit}'/>">
-                            <div class="form-text">Si no tiene nit o se queda vacio se coloca (CF).</div></div>
+                            <div class="form-text">Si no tiene NIT o lo deja vacío se coloca CF.</div></div>
                         <div class="col-md-6"><label class="form-label">Dirección de entrega *</label>
                             <input name="direccion" class="form-control" maxlength="255" required value="<c:out value='${form.direccion}'/>"></div>
                         <div class="col-md-6"><label class="form-label">Contraseña *</label>
-                            <input name="password" type="password" class="form-control" minlength="8" required>
+                            <input name="password" type="password" class="form-control" required>
                             <div class="form-text">Mínimo 8 caracteres, con letras y números.</div></div>
                         <div class="col-md-6"><label class="form-label">Confirmar contraseña *</label>
-                            <input name="confirmar" type="password" class="form-control" minlength="8" required></div>
+                            <input name="confirmar" type="password" class="form-control" required></div>
                     </div>
                     <button class="btn btn-verde w-100 mt-4">Crear cuenta</button>
                 </form>
@@ -44,5 +43,25 @@
         </div>
     </div>
 </div>
-<%@ include file="/WEB-INF/vistas/otros/pie.jspf" %>
 
+<script>
+  const pass = document.querySelector('input[name="password"]');
+  const conf = document.querySelector('input[name="confirmar"]');
+
+  function validarPassword() {
+    const v = pass.value;
+    if (v.length < 8) {
+      pass.setCustomValidity('La contraseña debe tener al menos 8 caracteres.');
+    } else if (!/[A-Za-z]/.test(v) || !/[0-9]/.test(v)) {
+      pass.setCustomValidity('La contraseña debe tener letras y números.');
+    } else {
+      pass.setCustomValidity('');
+    }
+    conf.setCustomValidity(conf.value !== '' && conf.value !== v ? 'Las contraseñas no coinciden.' : '');
+  }
+
+  pass.addEventListener('input', validarPassword);
+  conf.addEventListener('input', validarPassword);
+</script>
+
+<%@ include file="/WEB-INF/vistas/otros/pie.jspf" %>
