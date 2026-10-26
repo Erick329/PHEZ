@@ -36,32 +36,11 @@
                         <div class="col-md-6"><label class="form-label">Confirmar contraseña *</label>
                             <input name="confirmar" type="password" class="form-control" required></div>
                     </div>
-                    <button class="btn btn-verde w-100 mt-4">Crear cuenta</button>
+                    <button class="btn btn-primario w-100 mt-4">Crear cuenta</button>
                 </form>
                 <p class="text-center small mt-3 mb-0">¿Ya tiene cuenta? <a href="${raiz}/login">Inicie sesión</a></p>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-  const pass = document.querySelector('input[name="password"]');
-  const conf = document.querySelector('input[name="confirmar"]');
-
-  function validarPassword() {
-    const v = pass.value;
-    if (v.length < 8) {
-      pass.setCustomValidity('La contraseña debe tener al menos 8 caracteres.');
-    } else if (!/[A-Za-z]/.test(v) || !/[0-9]/.test(v)) {
-      pass.setCustomValidity('La contraseña debe tener letras y números.');
-    } else {
-      pass.setCustomValidity('');
-    }
-    conf.setCustomValidity(conf.value !== '' && conf.value !== v ? 'Las contraseñas no coinciden.' : '');
-  }
-
-  pass.addEventListener('input', validarPassword);
-  conf.addEventListener('input', validarPassword);
-</script>
-
 <%@ include file="/WEB-INF/vistas/otros/pie.jspf" %>

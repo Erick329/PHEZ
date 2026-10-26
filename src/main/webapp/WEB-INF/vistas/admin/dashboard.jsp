@@ -5,8 +5,17 @@
     <div class="col-6 col-xl-3"><div class="kpi"><div class="kpi-t">Ventas de hoy</div><div class="kpi-v">Q <fmt:formatNumber value="${hoy.ventas}" pattern="#,##0.00"/></div><div class="kpi-d">${hoy.pedidos} pedido(s)</div></div></div>
     <div class="col-6 col-xl-3"><div class="kpi"><div class="kpi-t">Ventas últimos 30 días</div><div class="kpi-v">Q <fmt:formatNumber value="${mes.ventas}" pattern="#,##0.00"/></div><div class="kpi-d">${mes.pedidos} pedidos · ticket Q <fmt:formatNumber value="${mes.ticket}" pattern="#,##0.00"/></div></div></div>
     <div class="col-6 col-xl-3"><div class="kpi"><div class="kpi-t">Pedidos por atender</div><div class="kpi-v text-primary">${porAtender}</div><div class="kpi-d"><a href="${raiz}/admin/pedidos?estado=PAGADO">Ver pagados</a> · <a href="${raiz}/admin/pedidos?estado=PENDIENTE">pendientes</a></div></div></div>
-    <div class="col-6 col-xl-3"><div class="kpi"><div class="kpi-t">Productos bajo mínimo</div><div class="kpi-v ${fn:length(bajoStock) > 0 ? 'text-danger' : 'text-success'}">${fn:length(bajoStock)}</div><div class="kpi-d">Requieren reabastecer</div></div></div>
+    <div class="col-6 col-xl-3"><div class="kpi"><div class="kpi-t">Productos bajo mínimo</div><div class="kpi-v ${fn:length(bajoStock) > 0 ? 'text-danger' : 'text-primario'}">${fn:length(bajoStock)}</div><div class="kpi-d">Requieren reabastecer</div></div></div>
 </div>
+<div class="caja mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="h6 fw-bold mb-0"><i class="bi bi-graph-up text-primario"></i> Ventas por día · últimos 14 días</h2>
+        <a href="${raiz}/admin/reportes" class="small">Ver reportes</a>
+    </div>
+    <div class="grafica-dashboard"><canvas id="gVentasDia" aria-label="Gráfica de ventas por día"></canvas></div>
+</div>
+<script type="application/json" id="datosVentasDia">${jsonVentasDia}</script>
+
 <div class="row g-3">
     <div class="col-xl-8">
         <div class="caja">
@@ -38,7 +47,7 @@
                                 <span class="text-danger fw-semibold">${p.stock} / mín. ${p.stockMinimo}</span></li>
                         </c:forEach>
                     </ul>
-                    <c:if test="${u.admin}"><a href="${raiz}/admin/inventario" class="btn btn-sm btn-verde mt-2">Registrar entrada</a></c:if>
+                    <c:if test="${u.admin}"><a href="${raiz}/admin/inventario" class="btn btn-sm btn-primario mt-2">Registrar entrada</a></c:if>
                 </c:otherwise>
             </c:choose>
         </div>
@@ -58,4 +67,5 @@
         </div>
     </div>
 </div>
+<script src="${raiz}/lib/chartjs/chart.umd.js"></script>
 <%@ include file="/WEB-INF/vistas/admin/_pie.jspf" %>

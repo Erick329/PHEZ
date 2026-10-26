@@ -1,4 +1,3 @@
-<%-- any content can be specified here e.g.: --%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
@@ -8,79 +7,140 @@
 <c:set var="u" value="${sessionScope.usuario}"/>
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title><c:out value="${titulo}"/> | Venta de Alimentos Phez</title>
-        <link href="${raiz}/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
-        <link href="${raiz}/lib/bootstrap-icons/bootstrap-icons.min.css" rel="stylesheet">
-        <link href="${raiz}/css/estilos.css" rel="stylesheet">
-    </head>
-    <body class="d-flex flex-column min-vh-100">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-verde sticky-top shadow-sm">
-            <div class="container">
-                <a class="navbar-brand fw-bold" href="${raiz}/inicio">Venta de Alimentos <span class="text-naranja-claro">Phez</span></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-label="Menú">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="menu">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link" href="${raiz}/inicio">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="${raiz}/catalogo">Catálogo</a></li>
-                        <li class="nav-item"><a class="nav-link" href="${raiz}/nosotros">Nosotros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="${raiz}/contacto">Contacto</a></li>
-                    </ul>
-                    <form class="d-flex me-lg-3 my-2 my-lg-0" action="${raiz}/catalogo" method="get" role="search">
-                        <input class="form-control form-control-sm rounded-pill buscador" type="search" name="q"
-                               placeholder="Buscar productos..." value="<c:out value='${param.q}'/>" aria-label="Buscar">
-                    </form>
-                    <ul class="navbar-nav align-items-lg-center">
-                        <c:choose>
-                            <c:when test="${empty u}">
-                                <li class="nav-item"><a class="nav-link" href="${raiz}/login"><i class="bi bi-person"></i> Iniciar sesión</a></li>
-                                </c:when>
-                                <c:otherwise>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                        <i class="bi bi-person-circle"></i> <c:out value="${u.nombre}"/>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <c:if test="${u.personal}">
-                                            <li><a class="dropdown-item" href="${raiz}/admin/dashboard"><i class="bi bi-speedometer2"></i> Panel administrativo</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            </c:if>
-                                        <li><a class="dropdown-item" href="${raiz}/cliente/perfil"><i class="bi bi-person"></i> Mi cuenta</a></li>
-                                        <li><a class="dropdown-item" href="${raiz}/cliente/pedidos"><i class="bi bi-bag"></i> Mis pedidos</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li>
-                                            <form action="${raiz}/logout" method="post" class="px-3">
-                                                <input type="hidden" name="csrf" value="${sessionScope.csrf}">
-                                                <button class="btn btn-link p-0 text-danger text-decoration-none"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </c:otherwise>
-                        </c:choose>
-                        <li class="nav-item ms-lg-2">
-                            <a class="btn btn-naranja btn-sm rounded-pill px-3" href="${raiz}/carrito">
-                                <i class="bi bi-cart3"></i> Carrito (${empty sessionScope.carrito ? 0 : sessionScope.carrito.cantidadTotal})
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><c:out value="${titulo}"/> | Venta de Alimentos Phez</title>
+    <link href="${raiz}/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="${raiz}/lib/bootstrap-icons/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="${raiz}/css/estilos.css?v=2" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<header class="sticky-top shadow-sm">
+    <div class="barra-principal bg-primario">
+        <div class="container d-flex align-items-center gap-2 gap-lg-3 py-2">
+            <button class="btn btn-link text-white p-1 fs-3 lh-1" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#menuCategorias" aria-controls="menuCategorias" aria-label="Abrir menú de categorías">
+                <i class="bi bi-list"></i>
+            </button>
+            <a class="marca text-white text-decoration-none fw-bold fs-4 me-lg-2" href="${raiz}/inicio">
+                Alimentos <span class="text-acento">Phez</span>
+            </a>
+
+            <form class="buscador-central d-none d-md-flex flex-grow-1" action="${raiz}/catalogo" method="get" role="search">
+                <input class="form-control" type="search" name="q" placeholder="¿Qué estás buscando?"
+                       value="<c:out value='${param.q}'/>" aria-label="Buscar productos">
+                <button class="btn btn-acento px-3" type="submit" aria-label="Buscar"><i class="bi bi-search"></i></button>
+            </form>
+
+            <div class="d-flex align-items-center gap-1 gap-lg-3 ms-auto">
+                <c:choose>
+                    <c:when test="${empty u}">
+                        <a class="accion-cabecera" href="${raiz}/login"><i class="bi bi-person-circle"></i><span class="d-none d-lg-inline"> Iniciar sesión</span></a>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="dropdown">
+                            <a class="accion-cabecera dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle"></i><span class="d-none d-lg-inline"> <c:out value="${u.nombre}"/></span>
                             </a>
-                        </li>
-                    </ul>
-                </div>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <c:if test="${u.personal}">
+                                    <li><a class="dropdown-item" href="${raiz}/admin/dashboard"><i class="bi bi-speedometer2"></i> Panel administrativo</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                </c:if>
+                                <li><a class="dropdown-item" href="${raiz}/cliente/perfil"><i class="bi bi-person"></i> Mi cuenta</a></li>
+                                <li><a class="dropdown-item" href="${raiz}/cliente/pedidos"><i class="bi bi-bag"></i> Mis pedidos</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form action="${raiz}/logout" method="post" class="px-3">
+                                        <input type="hidden" name="csrf" value="${sessionScope.csrf}">
+                                        <button class="btn btn-link p-0 text-danger text-decoration-none"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                        <a class="accion-cabecera d-none d-lg-inline" href="${raiz}/cliente/pedidos"><i class="bi bi-bag"></i> Mis pedidos</a>
+                    </c:otherwise>
+                </c:choose>
+                <a class="btn btn-acento rounded-pill px-3" href="${raiz}/carrito" aria-label="Carrito">
+                    <i class="bi bi-cart3"></i> ${empty sessionScope.carrito ? 0 : sessionScope.carrito.cantidadTotal}
+                </a>
             </div>
-        </nav>
-        <main class="flex-grow-1">
-            <div class="container mt-3">
-                <c:if test="${not empty sessionScope.flashOk}">
-                    <div class="alert alert-success alert-dismissible fade show"><i class="bi bi-check-circle"></i> <c:out value="${sessionScope.flashOk}"/>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
-                        <c:remove var="flashOk" scope="session"/>
-                    </c:if>
-                    <c:if test="${not empty sessionScope.flashError}">
-                    <div class="alert alert-danger alert-dismissible fade show"><i class="bi bi-exclamation-triangle"></i> <c:out value="${sessionScope.flashError}"/>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
-                        <c:remove var="flashError" scope="session"/>
-                    </c:if>
+        </div>
+        <div class="container pb-2 d-md-none">
+            <form class="buscador-central d-flex" action="${raiz}/catalogo" method="get" role="search">
+                <input class="form-control" type="search" name="q" placeholder="¿Qué estás buscando?" value="<c:out value='${param.q}'/>" aria-label="Buscar productos">
+                <button class="btn btn-acento px-3" type="submit" aria-label="Buscar"><i class="bi bi-search"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <nav class="barra-secundaria bg-white border-bottom">
+        <div class="container d-flex align-items-center gap-3 small">
+            <a class="enlace-sec" href="${raiz}/inicio"><i class="bi bi-house"></i> Inicio</a>
+            <div class="btn-group dropdown">
+                <a class="enlace-sec pe-1" href="${raiz}/catalogo"><i class="bi bi-grid"></i> Catálogo</a>
+                <button type="button" class="enlace-sec btn btn-link dropdown-toggle dropdown-toggle-split px-1"
+                        data-bs-toggle="dropdown" aria-expanded="false" aria-label="Ver categorías"></button>
+                <ul class="dropdown-menu shadow">
+                    <li><a class="dropdown-item fw-semibold" href="${raiz}/catalogo">Todo el catálogo</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <c:forEach var="cat" items="${menuCategorias}">
+                        <li><a class="dropdown-item" href="${raiz}/catalogo?categoria=${cat.idCategoria}">${cat.icono} <c:out value="${cat.nombre}"/></a></li>
+                    </c:forEach>
+                </ul>
             </div>
+            <span class="ms-auto text-muted d-none d-md-inline"><i class="bi bi-truck text-primario"></i> Envío gratis desde Q 200.00</span>
+        </div>
+    </nav>
+</header>
+
+<div class="offcanvas offcanvas-start menu-lateral" tabindex="-1" id="menuCategorias" aria-labelledby="tituloMenu">
+    <div class="offcanvas-header bg-primario text-white">
+        <h2 class="offcanvas-title h5 fw-bold mb-0" id="tituloMenu">
+            <c:choose>
+                <c:when test="${empty u}"><i class="bi bi-person-circle"></i> ¡Hola!</c:when>
+                <c:otherwise><i class="bi bi-person-circle"></i> Hola, <c:out value="${u.nombre}"/></c:otherwise>
+            </c:choose>
+        </h2>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <div class="titulo-seccion">Categorías</div>
+        <a class="item-menu" href="${raiz}/catalogo"><span class="me-2">🛒</span> Todo el catálogo <i class="bi bi-chevron-right ms-auto"></i></a>
+        <c:forEach var="cat" items="${menuCategorias}">
+            <a class="item-menu" href="${raiz}/catalogo?categoria=${cat.idCategoria}">
+                <span class="me-2">${cat.icono}</span> <c:out value="${cat.nombre}"/> <i class="bi bi-chevron-right ms-auto"></i>
+            </a>
+        </c:forEach>
+        <div class="titulo-seccion">Mi cuenta</div>
+        <c:choose>
+            <c:when test="${empty u}">
+                <a class="item-menu" href="${raiz}/login"><i class="bi bi-box-arrow-in-right me-2"></i> Iniciar sesión</a>
+                <a class="item-menu" href="${raiz}/registro"><i class="bi bi-person-plus me-2"></i> Crear cuenta</a>
+            </c:when>
+            <c:otherwise>
+                <a class="item-menu" href="${raiz}/cliente/perfil"><i class="bi bi-person me-2"></i> Mi cuenta</a>
+                <a class="item-menu" href="${raiz}/cliente/pedidos"><i class="bi bi-bag me-2"></i> Mis pedidos</a>
+            </c:otherwise>
+        </c:choose>
+        <div class="titulo-seccion">Phez</div>
+        <a class="item-menu" href="${raiz}/nosotros"><i class="bi bi-info-circle me-2"></i> Nosotros</a>
+        <a class="item-menu" href="${raiz}/contacto"><i class="bi bi-envelope me-2"></i> Contacto</a>
+    </div>
+</div>
+
+<main class="flex-grow-1">
+<div class="container mt-3">
+    <c:if test="${not empty sessionScope.flashOk}">
+        <div class="alert alert-success alert-dismissible fade show"><i class="bi bi-check-circle"></i> <c:out value="${sessionScope.flashOk}"/>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+        <c:remove var="flashOk" scope="session"/>
+    </c:if>
+    <c:if test="${not empty sessionScope.flashError}">
+        <div class="alert alert-danger alert-dismissible fade show"><i class="bi bi-exclamation-triangle"></i> <c:out value="${sessionScope.flashError}"/>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+        <c:remove var="flashError" scope="session"/>
+    </c:if>
+</div>

@@ -11,38 +11,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><c:out value="${titulo}"/> | Panel phez</title>
+    <title><c:out value="${titulo}"/> | Panel Phez</title>
     <link href="${raiz}/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="${raiz}/lib/bootstrap-icons/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="${raiz}/css/estilos.css" rel="stylesheet">
-    </head>
+    <link href="${raiz}/css/estilos.css?v=2" rel="stylesheet">
+</head>
 <body class="admin">
-<div class="d-flex">
-    <aside class="barra-lateral d-flex flex-column flex-shrink-0 p-3 text-white">
-        <a href="${raiz}/admin/dashboard" class="text-white text-decoration-none fs-5 fw-bold mb-3">Panel <span class="text-naranja-claro">Admin</span></a>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li><a href="${raiz}/admin/dashboard" class="nav-link ${ruta == '/admin/dashboard' ? 'active' : ''}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-            <li><a href="${raiz}/admin/pedidos" class="nav-link ${ruta == '/admin/pedidos' ? 'active' : ''}"><i class="bi bi-receipt"></i> Pedidos</a></li>
+
+<div class="admin-layout">
+    <aside class="barra-lateral" id="barraLateral">
+        <div class="barra-cabecera">
+            <button type="button" class="btn-contraer" id="btnContraer" aria-label="Contraer o expandir menú" title="Ocultar / mostrar menú">
+                <i class="bi bi-list"></i>
+            </button>
+            <a href="${raiz}/admin/dashboard" class="barra-marca texto-barra">Panel <span class="text-acento">Admin</span></a>
+        </div>
+
+        <ul class="nav flex-column barra-nav">
+            <li><a href="${raiz}/admin/dashboard" class="nav-link ${ruta == '/admin/dashboard' ? 'active' : ''}" title="Dashboard"><i class="bi bi-speedometer2"></i><span class="texto-barra">Dashboard</span></a></li>
+            <li><a href="${raiz}/admin/pedidos" class="nav-link ${ruta == '/admin/pedidos' ? 'active' : ''}" title="Pedidos"><i class="bi bi-receipt"></i><span class="texto-barra">Pedidos</span></a></li>
             <c:if test="${u.admin}">
-                <li><a href="${raiz}/admin/productos" class="nav-link ${ruta == '/admin/productos' ? 'active' : ''}"><i class="bi bi-box-seam"></i> Productos</a></li>
-                <li><a href="${raiz}/admin/categorias" class="nav-link ${ruta == '/admin/categorias' ? 'active' : ''}"><i class="bi bi-tags"></i> Categorías</a></li>
-                <li><a href="${raiz}/admin/inventario" class="nav-link ${ruta == '/admin/inventario' ? 'active' : ''}"><i class="bi bi-clipboard-data"></i> Inventario</a></li>
-                <li><a href="${raiz}/admin/clientes" class="nav-link ${ruta == '/admin/clientes' ? 'active' : ''}"><i class="bi bi-people"></i> Clientes y usuarios</a></li>
-                <li><a href="${raiz}/admin/reportes" class="nav-link ${ruta == '/admin/reportes' ? 'active' : ''}"><i class="bi bi-bar-chart-line"></i> Reportes</a></li>
+                <li><a href="${raiz}/admin/productos" class="nav-link ${ruta == '/admin/productos' ? 'active' : ''}" title="Productos"><i class="bi bi-box-seam"></i><span class="texto-barra">Productos</span></a></li>
+                <li><a href="${raiz}/admin/categorias" class="nav-link ${ruta == '/admin/categorias' ? 'active' : ''}" title="Categorías"><i class="bi bi-tags"></i><span class="texto-barra">Categorías</span></a></li>
+                <li><a href="${raiz}/admin/inventario" class="nav-link ${ruta == '/admin/inventario' ? 'active' : ''}" title="Inventario"><i class="bi bi-clipboard-data"></i><span class="texto-barra">Inventario</span></a></li>
+                <li><a href="${raiz}/admin/clientes" class="nav-link ${ruta == '/admin/clientes' ? 'active' : ''}" title="Clientes y usuarios"><i class="bi bi-people"></i><span class="texto-barra">Clientes y usuarios</span></a></li>
+                <li><a href="${raiz}/admin/reportes" class="nav-link ${ruta == '/admin/reportes' ? 'active' : ''}" title="Reportes"><i class="bi bi-bar-chart-line"></i><span class="texto-barra">Reportes</span></a></li>
             </c:if>
         </ul>
-        <hr>
-        <div class="small">
-            <div><i class="bi bi-person-badge"></i> <c:out value="${u.nombreCompleto}"/></div>
-            <div class="opacity-75 mb-2">${u.rol}</div>
-            <a href="${raiz}/inicio" class="text-white-50 d-block mb-1"><i class="bi bi-shop"></i> Ver tienda</a>
-            <form action="${raiz}/logout" method="post">
-                <input type="hidden" name="csrf" value="${sessionScope.csrf}">
-                <button class="btn btn-sm btn-outline-light"><i class="bi bi-box-arrow-right"></i> Salir</button>
-            </form>
+
+        <div class="dropup barra-usuario">
+            <button type="button" class="btn-usuario" data-bs-toggle="dropdown" aria-expanded="false" title="Opciones de usuario">
+                <span class="avatar">${fn:toUpperCase(fn:substring(u.nombre, 0, 1))}</span>
+                <span class="texto-barra text-start lh-sm">
+                    <span class="d-block fw-semibold text-truncate"><c:out value="${u.nombreCompleto}"/></span>
+                    <span class="d-block small opacity-75">${u.rol}</span>
+                </span>
+                <i class="bi bi-three-dots-vertical texto-barra ms-auto"></i>
+            </button>
+            <ul class="dropdown-menu shadow">
+                <li><h6 class="dropdown-header"><c:out value="${u.email}"/></h6></li>
+                <li><a class="dropdown-item" href="${raiz}/cliente/perfil"><i class="bi bi-person"></i> Mi cuenta</a></li>
+                <li><a class="dropdown-item" href="${raiz}/inicio"><i class="bi bi-shop"></i> Ver tienda</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form action="${raiz}/logout" method="post" class="px-3">
+                        <input type="hidden" name="csrf" value="${sessionScope.csrf}">
+                        <button class="btn btn-link p-0 text-danger text-decoration-none"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</button>
+                    </form>
+                </li>
+            </ul>
         </div>
     </aside>
-    <main class="flex-grow-1 p-3 p-md-4 contenido-admin">
+
+    <main class="contenido-admin p-3 p-md-4">
         <c:if test="${not empty sessionScope.flashOk}">
             <div class="alert alert-success alert-dismissible fade show"><c:out value="${sessionScope.flashOk}"/><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
             <c:remove var="flashOk" scope="session"/>
