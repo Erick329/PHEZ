@@ -15,6 +15,13 @@ public class BaseServlet extends HttpServlet {
     protected void vista(HttpServletRequest req, HttpServletResponse resp, String vista, String titulo)
             throws ServletException, IOException {
         req.setAttribute("titulo", titulo);
+        if (req.getAttribute("menuCategorias") == null && !vista.startsWith("admin/")) {
+            try {
+                req.setAttribute("menuCategorias", new com.phez.repositorio.CategoriaRepositorio().listar(true));
+            } catch (SQLException e) {
+                log("No se pudieron cargar las categorías del menú", e);
+            }
+        }
         req.getRequestDispatcher("/WEB-INF/vistas/" + vista + ".jsp").forward(req, resp);
     }
     

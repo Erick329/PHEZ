@@ -1,6 +1,6 @@
     </main>
 </div>
 <script src="${raiz}/lib/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="${raiz}/js/app.js"></script>
+<script src="${raiz}/js/app.js?v=2"></script>
 </body>
 </html>

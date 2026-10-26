@@ -21,7 +21,6 @@
                 <td class="text-end text-nowrap">
                     <c:if test="${user.idUsuario != sessionScope.usuario.idUsuario}">
 
-                        <%-- Desbloquear --%>
                         <c:if test="${user.bloqueado}">
                             <form method="post" action="${raiz}/admin/clientes" class="d-inline">
                                 <input type="hidden" name="csrf" value="${sessionScope.csrf}">
@@ -30,26 +29,23 @@
                             </form>
                         </c:if>
 
-                        <%-- Activar / desactivar --%>
                         <form method="post" action="${raiz}/admin/clientes" class="d-inline">
                             <input type="hidden" name="csrf" value="${sessionScope.csrf}">
                             <input type="hidden" name="id" value="${user.idUsuario}">
-                            <button name="accion" value="${user.activo ? 'desactivar' : 'activar'}" class="btn btn-sm ${user.activo ? 'btn-outline-danger' : 'btn-outline-success'}" title="${user.activo ? 'Desactivar' : 'Activar'}">
+                            <button name="accion" value="${user.activo ? 'desactivar' : 'activar'}" class="btn btn-sm ${user.activo ? 'btn-outline-danger' : 'btn-outline-primario'}" title="${user.activo ? 'Desactivar' : 'Activar'}">
                                 <i class="bi ${user.activo ? 'bi-person-x' : 'bi-person-check'}"></i></button>
                         </form>
 
-                        <%-- Opciones solo para ADMIN --%>
                         <c:if test="${sessionScope.usuario.admin}">
 
-                            <%-- Restablecer contraseña --%>
-                            <form method="post" action="${raiz}/admin/clientes" class="d-inline">
+                            <%-- Restablecer contraseña (la confirmación la hace js/app.js con data-confirmar) --%>
+                            <form method="post" action="${raiz}/admin/clientes" class="d-inline"
+                                  data-confirmar="¿Generar una contraseña temporal para este usuario?">
                                 <input type="hidden" name="csrf" value="${sessionScope.csrf}">
                                 <input type="hidden" name="id" value="${user.idUsuario}">
-                                <button name="accion" value="restablecer" class="btn btn-sm btn-outline-secondary" title="Restablecer contraseña"
-                                        onclick="return confirm('¿Generar una contraseña temporal para este usuario?')"><i class="bi bi-key"></i></button>
+                                <button name="accion" value="restablecer" class="btn btn-sm btn-outline-secondary" title="Restablecer contraseña"><i class="bi bi-key"></i></button>
                             </form>
 
-                            <%-- Cambiar rol --%>
                             <form method="post" action="${raiz}/admin/clientes" class="d-inline-flex gap-1 ms-1 align-middle">
                                 <input type="hidden" name="csrf" value="${sessionScope.csrf}">
                                 <input type="hidden" name="id" value="${user.idUsuario}">

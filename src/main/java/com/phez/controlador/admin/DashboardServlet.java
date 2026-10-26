@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import com.phez.repositorio.LoteRepositorio;
+import com.phez.modelo.Reporte;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/admin/dashboard")
 public class DashboardServlet extends BaseServlet {
@@ -31,10 +35,27 @@ public class DashboardServlet extends BaseServlet {
             req.setAttribute("bajoStock", producto.bajoStock());
             req.setAttribute("porVencer", lote.proximosAVencer(15));
             req.setAttribute("porAtender", pedido.listar("PAGADO", 50).size() + pedido.listar("PENDIENTE", 50).size());
+            req.setAttribute("jsonVentasDia", ventasPorDia(hoy.minusDays(13), hoy));
             vista(req, resp, "admin/dashboard", "Dashboard");
         } catch (SQLException e) {
             errorBD(req, resp, e);
         }
     }
+
+    private String ventasPorDia(LocalDate desde, LocalDate hasta) throws SQLException {
+        Map<String, Reporte> porFecha = new HashMap<>();
+        for (Reporte r : reporte.ventasPorPeriodo(desde, hasta)) {
+            porFecha.put(r.getEtiqueta(), r);          // etiqueta = "yyyy-MM-dd"
+        }
+        DateTimeFormatter corto = DateTimeFormatter.ofPattern("dd/MM");
+        StringBuilder etiquetas = new StringBuilder(), montos = new StringBuilder(), pedidos = new StringBuilder();
+        for (LocalDate d = desde; !d.isAfter(hasta); d = d.plusDays(1)) {
+            Reporte r = porFecha.get(d.toString());
+            if (etiquetas.length() > 0) { etiquetas.append(','); montos.append(','); pedidos.append(','); }
+            etiquetas.append('"').append(d.format(corto)).append('"');
+            montos.append(r == null || r.getMonto() == null ? "0" : r.getMonto().toPlainString());
+            pedidos.append(r == null ? 0 : r.getCantidad());
+        }
+        return "{\"etiquetas\":[" + etiquetas + "],\"montos\":[" + montos + "],\"pedidos\":[" + pedidos + "]}";
+    }
 }
-        

@@ -11,6 +11,19 @@ public class Categoria implements Serializable {
     private int totalProductos;
     
     public boolean isActivo(){ return "ACTIVO".equals(status); }
+
+    public String getIcono() {
+        String n = nombre == null ? "" : java.text.Normalizer.normalize(nombre.toLowerCase(), java.text.Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        if (n.contains("grano")) return "🌾";
+        if (n.contains("lacteo")) return "🥛";
+        if (n.contains("bebida")) return "🧃";
+        if (n.contains("snack")) return "🍪";
+        if (n.contains("fruta") || n.contains("verdura")) return "🥕";
+        if (n.contains("carne")) return "🥩";
+        if (n.contains("limpieza")) return "🧴";
+        return "🛒";
+    }
     
     public int getIdCategoria(){ return idCategoria; } 
     public void setIdCategoria( int idCategoria) { this.idCategoria = idCategoria; }
