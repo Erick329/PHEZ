@@ -117,6 +117,7 @@ public class PedidoService {
 
    
     public static List<String> siguientesEstados(String actual) {
+        if (actual == null) return Arrays.asList();
         switch (actual) {
             case "PENDIENTE": return Arrays.asList("PAGADO", "CANCELADO");
             case "PAGADO": return Arrays.asList("EN_PREPARACION", "CANCELADO");

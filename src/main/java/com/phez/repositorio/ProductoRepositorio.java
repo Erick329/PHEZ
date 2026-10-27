@@ -21,8 +21,12 @@ import com.phez.modelo.Producto;
  */
 public class ProductoRepositorio {
 
+    private static final String STOCK_VENDIBLE =
+            "(SELECT COALESCE(SUM(lv.cantidad), 0) FROM Lotes lv WHERE lv.idProducto = p.idProducto "
+          + "AND lv.status = 'ACTIVO' AND lv.fechaVencimiento >= CURDATE())";
+
     private static final String SELECT_BASE =
-            "SELECT p.*, c.nombre AS categoria, "
+            "SELECT p.*, c.nombre AS categoria, " + STOCK_VENDIBLE + " AS stockVendible, "
           + "(SELECT MIN(l.fechaVencimiento) FROM Lotes l WHERE l.idProducto = p.idProducto "
           + "   AND l.status = 'ACTIVO' AND l.cantidad > 0) AS proximoVencimiento "
           + "FROM Productos p JOIN Categorias c ON c.idCategoria = p.idCategoria ";
@@ -64,7 +68,7 @@ public class ProductoRepositorio {
 
     /** Productos más vendidos (para el menú del cliente). */
     public List<Producto> destacados(int limite) throws SQLException {
-        String sql = SELECT_BASE + "WHERE p.status = 'ACTIVO' AND c.status = 'ACTIVO' AND p.stock > 0 "
+        String sql = SELECT_BASE + "WHERE p.status = 'ACTIVO' AND c.status = 'ACTIVO' AND " + STOCK_VENDIBLE + " > 0 "
                 + "ORDER BY (SELECT COALESCE(SUM(d.cantidad), 0) FROM DetallePedido d "
                 + "WHERE d.idProducto = p.idProducto) DESC, p.nombre LIMIT ?";
         List<Producto> lista = new ArrayList<>();
@@ -82,17 +86,13 @@ public class ProductoRepositorio {
         List<Producto> lista = new ArrayList<>();
         try (Connection cn = ConexionBD.getConnection();
              PreparedStatement ps = cn.prepareStatement(SELECT_BASE
-                     + "WHERE p.status = 'ACTIVO' AND p.stock <= p.stockMinimo ORDER BY p.stock");
+                     + "WHERE p.status = 'ACTIVO' AND " + STOCK_VENDIBLE + " <= p.stockMinimo ORDER BY stockVendible");
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) lista.add(mapear(rs));
         }
         return lista;
     }
 
-    /**
-     * Inserta (id = 0) o actualiza un producto.
-     * El stock NO se modifica aquí: se calcula a partir de los lotes (ver LoteDAO / triggers).
-     */
     public void guardar(Producto p) throws SQLException {
         boolean nuevo = p.getIdProducto() == 0;
         String sql = nuevo
@@ -216,7 +216,7 @@ public class ProductoRepositorio {
         p.setDescripcion(rs.getString("descripcion"));
         p.setCodigo(rs.getString("codigo"));
         p.setPrecio(rs.getBigDecimal("precio"));
-        p.setStock(rs.getInt("stock"));
+        p.setStock(rs.getInt("stockVendible"));
         p.setStockMinimo(rs.getInt("stockMinimo"));
         p.setStatus(rs.getString("status"));
         p.setIdCategoria(rs.getInt("idCategoria"));
