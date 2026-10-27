@@ -34,9 +34,9 @@ public class CarritoServlet extends BaseServlet{
                 case "agregar": {
                     Producto p = productoRepositorio.buscar(idProducto);
                     if (p == null || !p.isActivo()) {
-                        error(req, "El producto no está disponible.");
+                        error(req, "Producto no disponible");
                     } else if (cantidad < 1 || cantidad > 99) {
-                        error(req, "La cantidad debe estar entre 1 y 99.");
+                        error(req, "Cantidad incorrecta");
                     } else if (carrito.cantidadDe(idProducto) + cantidad > p.getStock()) {
                         error(req, "Solo hay " + p.getStock() + " unidades disponibles de " + p.getNombre() + ".");
                     } else {
@@ -48,9 +48,9 @@ public class CarritoServlet extends BaseServlet{
                 case "actualizar": {
                     Producto p = productoRepositorio.buscar(idProducto);
                     if (p != null && cantidad > p.getStock()) {
-                        error(req, "Solo hay " + p.getStock() + " unidades disponibles de " + p.getNombre() + ".");
+                        error(req, "Solo hay " + p.getStock() + " unidades disponibles " + p.getNombre() + ".");
                     } else if (cantidad < 0 || cantidad > 99) {
-                        error(req, "La cantidad debe estar entre 0 y 99.");
+                        error(req, "Cantidad incorrecta");
                     } else {
                         carrito.actualizar(idProducto, cantidad);
                     }
