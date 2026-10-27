@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Checkout: mostrar datos de tarjeta solo si se elige ese método
     var datos = document.getElementById('datosTarjeta');
     if (datos) {
         var actualizar = function () {
@@ -19,13 +18,13 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         document.querySelectorAll('input[name="metodo"]').forEach(function (r) { r.addEventListener('change', actualizar); });
         actualizar();
-        // Evita doble envío del pago
+
         document.getElementById('formCheckout').addEventListener('submit', function () {
             var b = document.getElementById('btnPagar');
             setTimeout(function () { b.disabled = true; b.textContent = 'Procesando pago...'; }, 0);
         });
     }
-    // ===== Panel: barra lateral que se contrae (se recuerda en el navegador) =====
+
     var barra = document.getElementById('barraLateral');
     var btnContraer = document.getElementById('btnContraer');
     if (barra && btnContraer) {
@@ -39,13 +38,12 @@ document.addEventListener('DOMContentLoaded', function () {
         barra.addEventListener('mouseleave', function () {
             if (!barra.querySelector('.dropdown-menu.show')) barra.classList.remove('desplegada');
         });
-        // Si se cierra el menú del usuario con el mouse fuera, se vuelve a contraer
+
         barra.addEventListener('hidden.bs.dropdown', function () {
             if (!barra.matches(':hover')) barra.classList.remove('desplegada');
         });
     }
 
-    // ===== Inicio: flechas del carrusel de productos =====
     document.querySelectorAll('.flecha-tira').forEach(function (b) {
         b.addEventListener('click', function () {
             var tira = document.getElementById(b.getAttribute('data-tira'));
@@ -53,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ===== Login: mostrar / ocultar contraseña =====
     document.querySelectorAll('[data-ver]').forEach(function (b) {
         b.addEventListener('click', function () {
             var input = document.getElementById(b.getAttribute('data-ver'));
@@ -63,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ===== Registro: mensajes propios para la contraseña =====
     var regPass = document.querySelector('form[action$="/registro"] input[name="password"]');
     var regConf = document.querySelector('form[action$="/registro"] input[name="confirmar"]');
     if (regPass && regConf) {
@@ -79,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
         validarPassword();
     }
 
-    // ===== Dashboard: gráfica de ventas por día =====
     var datosDia = document.getElementById('datosVentasDia');
     if (datosDia && typeof Chart !== 'undefined') {
         var d = JSON.parse(datosDia.textContent);
