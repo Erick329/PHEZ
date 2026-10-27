@@ -7,8 +7,8 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-7">
-            <div class="bg-write rounded-4 shadow-sm p-4 p-md-5">
-                <h1 class="h4 fw-bold"><i class="bi bi-person""></i>Mi Cuenta</h1>
+            <div class="bg-white rounded-4 shadow-sm p-4 p-md-5">
+                <h1 class="h4 fw-bold"><i class="bi bi-person"></i> Mi Cuenta</h1>
                 <p class="text-muted small">Correo: <strong><c:out value="${u.email}"/></strong> · Rol: ${u.rol} ·
                     Cliente desde <fmt:formatDate value="${u.fechaRegistro}" pattern="dd/MM/yyyy"/></p>
                 <form method="post" action="${raiz}/cliente/perfil">
@@ -25,5 +25,6 @@
                 </form>
             </div>
         </div>
-    </div> 
-    <%@ include file="/WEB-INF/vistas/otros/pie.jspf" %>
+    </div>
+</div>
+<%@ include file="/WEB-INF/vistas/otros/pie.jspf" %>

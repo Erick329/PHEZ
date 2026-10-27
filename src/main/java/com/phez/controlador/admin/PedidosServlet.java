@@ -50,14 +50,20 @@ public class PedidosServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Validador.entero(req.getParameter("id"), 0);
         String estado = Validador.limpiar(req.getParameter("estado"));
+        Integer idUsr = idUsuario(req);
+        if (id <= 0 || estado.isEmpty() || idUsr == null) {
+            error(req, "Solicitud no válida.");
+            redirigir(req, resp, "/admin/pedidos");
+            return;
+        }
         try {
-            pedidoService.cambiarEstado(id, estado, idUsuario(req));
+            pedidoService.cambiarEstado(id, estado, idUsr);
             exito(req, "El pedido #" + id + " cambió a " + estado.replace('_', ' ') + ".");
-        
         } catch (ReglasDeNegocio ex) {
-            System.getLogger(PedidosServlet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            error(req, ex.getMessage());
         } catch (SQLException ex) {
-            System.getLogger(PedidosServlet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            log("Error al cambiar el estado del pedido #" + id, ex);
+            error(req, "No se pudo cambiar el estado del pedido. Intente de nuevo.");
         }
         redirigir(req, resp, "/admin/pedidos?id=" + id);
     }

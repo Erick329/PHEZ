@@ -4,7 +4,7 @@
     <a href="${raiz}/admin/pedidos" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left"></i> Volver</a>
 </div>
 <div class="row g-3">
-    <div class="col-xl-8"><div class="caja"><%@ include file="/WEB-INF/vistas/comun/detalle-pedido.jspf" %></div></div>
+    <div class="col-xl-8"><div class="caja"><%@ include file="/WEB-INF/vistas/otros/detalle-pedido.jspf" %></div></div>
     <div class="col-xl-4">
         <div class="caja">
             <h2 class="h6 fw-bold">Cambiar estado</h2>
