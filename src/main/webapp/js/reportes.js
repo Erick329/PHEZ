@@ -1,4 +1,3 @@
-// Gráficas del módulo de reportes con Chart.js
 document.addEventListener('DOMContentLoaded', function () {
     if (typeof Chart === 'undefined') return;
     var d = JSON.parse(document.getElementById('datosGraficas').textContent);
