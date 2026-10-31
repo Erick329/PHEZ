@@ -1,52 +1,53 @@
 @import url('../lib/fuentes/fuentes.css');
 
 /* =====================================================================
-   Identidad visual PHEZ – paleta azul oscuro + dorado
+   Identidad visual PHEZ – paleta verde azulado + magenta
    Todos los colores salen de estas variables: para ajustar la paleta
    solo se cambian aquí.
    ===================================================================== */
 :root {
-    --primario-900: #0B1F3A;   /* azul noche: barra lateral, pie, fondos oscuros */
-    --primario-800: #102A4C;   /* azul marino: barra superior */
-    --primario:     #1D4E89;   /* azul principal: botones, enlaces, precios */
-    --primario-500: #2F6DB5;   /* azul medio: hover y gráficas */
-    --primario-300: #8FB4E3;   /* azul claro: textos sobre fondo oscuro */
-    --primario-50:  #EAF1FB;   /* azul muy claro: fondos suaves */
-    --acento:       #F2B134;   /* dorado: carrito, buscar, detalles */
-    --acento-oscuro:#D9961A;
-    --fondo:        #F4F7FB;
+    --primario-900: #0F2E2A;   /* verde azulado muy oscuro: barra lateral, pie */
+    --primario-800: #1A443E;   /* verde azulado oscuro: barra superior */
+    --primario:     #24574F;   /* verde azulado principal: botones, enlaces, precios */
+    --primario-500: #2F7A6E;   /* verde azulado medio: hover y gráficas */
+    --primario-300: #9FCCC3;   /* verde azulado claro: textos sobre fondo oscuro */
+    --primario-50:  #E8F3F0;   /* verde azulado muy claro: fondos suaves */
+    --acento:       #D6337F;   /* magenta: carrito, buscar, pagar */
+    --acento-claro: #F27DB4;   /* magenta claro: textos sobre fondo oscuro */
+    --acento-oscuro:#B0246A;
+    --fondo:        #F4F8F7;
     --texto:        #1F2A37;
-    --gris:         #6B7A90;
+    --gris:         #66807B;
 
     --fuente-texto: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
     --fuente-titulos: 'Poppins', var(--fuente-texto);
 
     /* Colores de Bootstrap que usamos en enlaces y foco de campos */
     --bs-link-color: var(--primario);
-    --bs-link-color-rgb: 29, 78, 137;
+    --bs-link-color-rgb: 36, 87, 79;
     --bs-link-hover-color: var(--primario-500);
-    --bs-link-hover-color-rgb: 47, 109, 181;
+    --bs-link-hover-color-rgb: 47, 122, 110;
     --bs-body-font-family: var(--fuente-texto);
 }
 body { background: var(--fondo); color: var(--texto); font-family: var(--fuente-texto); }
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .display-6, .fuente-titulos, .marca, .barra-marca, .kpi-v, .precio {
     font-family: var(--fuente-titulos);
 }
-.form-control:focus, .form-select:focus { border-color: var(--primario-500); box-shadow: 0 0 0 .2rem rgba(47,109,181,.2); }
+.form-control:focus, .form-select:focus { border-color: var(--primario-500); box-shadow: 0 0 0 .2rem rgba(47,122,110,.2); }
 .form-check-input:checked { background-color: var(--primario); border-color: var(--primario); }
 
 /* Clases de color */
 .bg-primario { background: var(--primario-800) !important; }
 .bg-primario-oscuro { background: var(--primario-900) !important; }
 .text-primario { color: var(--primario) !important; }
-.text-acento { color: var(--acento) !important; }
+.text-acento { color: var(--acento-claro) !important; }
 
 .btn-primario { background: var(--primario); color: #fff; border: none; }
 .btn-primario:hover, .btn-primario:focus { background: var(--primario-800); color: #fff; }
 .btn-outline-primario { color: var(--primario); border: 1px solid var(--primario); background: transparent; }
 .btn-outline-primario:hover, .btn-outline-primario:focus { background: var(--primario); color: #fff; }
-.btn-acento { background: var(--acento); color: var(--primario-900); border: none; font-weight: 600; }
-.btn-acento:hover, .btn-acento:focus { background: var(--acento-oscuro); color: var(--primario-900); }
+.btn-acento { background: var(--acento); color: #fff; border: none; font-weight: 600; }
+.btn-acento:hover, .btn-acento:focus { background: var(--acento-oscuro); color: #fff; }
 /* Botón azul de Bootstrap con el tono de la paleta */
 .btn-primary { --bs-btn-bg: var(--primario); --bs-btn-border-color: var(--primario); --bs-btn-hover-bg: var(--primario-800);
                --bs-btn-hover-border-color: var(--primario-800); --bs-btn-active-bg: var(--primario-900); }
@@ -60,18 +61,18 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .display-6, .fuente-titulo
 .bg-verde { background: var(--primario-800) !important; }
 .bg-verde-oscuro { background: var(--primario-900) !important; }
 .text-verde { color: var(--primario) !important; }
-.text-naranja-claro { color: var(--acento) !important; }
+.text-naranja-claro { color: var(--acento-claro) !important; }
 .btn-verde { background: var(--primario); color: #fff; border: none; }
 .btn-verde:hover, .btn-verde:focus { background: var(--primario-800); color: #fff; }
-.btn-naranja { background: var(--acento); color: var(--primario-900); border: none; font-weight: 600; }
-.btn-naranja:hover, .btn-naranja:focus { background: var(--acento-oscuro); color: var(--primario-900); }
+.btn-naranja { background: var(--acento); color: #fff; border: none; font-weight: 600; }
+.btn-naranja:hover, .btn-naranja:focus { background: var(--acento-oscuro); color: #fff; }
 .hero { background: linear-gradient(120deg, var(--primario-800), var(--primario-500)); }
 .hero-iconos { font-size: 4.5rem; white-space: nowrap; }
 .buscador { min-width: 220px; }
 
 /* Productos */
 .tarjeta-producto { transition: transform .15s, box-shadow .15s; border-radius: 14px; overflow: hidden; }
-.tarjeta-producto:hover { transform: translateY(-3px); box-shadow: 0 .5rem 1rem rgba(11,31,58,.12) !important; }
+.tarjeta-producto:hover { transform: translateY(-3px); box-shadow: 0 .5rem 1rem rgba(15,46,42,.12) !important; }
 .img-producto { height: 150px; width: 100%; object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
 .img-grande { height: 320px; font-size: 8rem; }
 .icono-cat-1 { background: #FFF6E0; } .icono-cat-2 { background: #E6F0FB; } .icono-cat-3 { background: #FDEFE3; }
@@ -86,7 +87,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .display-6, .fuente-titulo
 .buscador-central .form-control { border-radius: 999px 0 0 999px; border: 0; padding-left: 1.1rem; }
 .buscador-central .btn { border-radius: 0 999px 999px 0; }
 .accion-cabecera { color: #fff; text-decoration: none; white-space: nowrap; font-size: .95rem; }
-.accion-cabecera:hover { color: var(--acento); }
+.accion-cabecera:hover { color: var(--acento-claro); }
 .accion-cabecera .bi { font-size: 1.25rem; vertical-align: -2px; }
 .barra-secundaria { padding: .35rem 0; }
 .enlace-sec { color: var(--primario-800); text-decoration: none; font-weight: 600; font-size: .875rem; }
@@ -114,10 +115,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .display-6, .fuente-titulo
 .slide-arte { font-size: 6rem; white-space: nowrap; filter: drop-shadow(0 6px 10px rgba(0,0,0,.2)); }
 .etiqueta-slide { display: inline-block; background: rgba(255,255,255,.2); border-radius: 999px; padding: .15rem .8rem; font-size: .8rem;
                   font-weight: 600; margin-bottom: .5rem; text-transform: uppercase; letter-spacing: .05em; }
-.slide-1 { background: linear-gradient(120deg, #0B1F3A, #1D4E89 60%, #2F6DB5); }
-.slide-2 { background: linear-gradient(120deg, #B86E00, #F2B134); }
-.slide-3 { background: linear-gradient(120deg, #0F4C5C, #2A9D8F); }
-.slide-4 { background: linear-gradient(120deg, #2B2D6E, #5A5FC0); }
+.slide-1 { background: linear-gradient(120deg, #0F2E2A, #24574F 60%, #2F7A6E); }
+.slide-2 { background: linear-gradient(120deg, #8E1C56, #D6337F); }
+.slide-3 { background: linear-gradient(120deg, #1A443E, #3E8C7E); }
+.slide-4 { background: linear-gradient(120deg, #5B1E4A, #A8336F); }
 .circulo-categoria .circulo { width: 86px; height: 86px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
                               font-size: 2.4rem; box-shadow: 0 2px 6px rgba(0,0,0,.08); transition: transform .15s; }
 .circulo-categoria { width: 100px; }
@@ -127,9 +128,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .display-6, .fuente-titulo
 
 /* ===== Login (pantalla completa) ===== */
 .pagina-login { min-height: 100vh; position: relative; overflow-x: hidden;
-    background: linear-gradient(135deg, rgba(11,31,58,.96), rgba(29,78,137,.88)), #0B1F3A; }
+    background: linear-gradient(135deg, rgba(15,46,42,.96), rgba(36,87,79,.88)), #0F2E2A; }
 /* Para usar una foto de fondo: guárdela en webapp/img/fondo-login.jpg y cambie la línea anterior por:
-   background: linear-gradient(135deg, rgba(11,31,58,.85), rgba(29,78,137,.75)), url('../img/fondo-login.jpg') center / cover no-repeat; */
+   background: linear-gradient(135deg, rgba(15,46,42,.85), rgba(36,87,79,.75)), url('../img/fondo-login.jpg') center / cover no-repeat; */
 .login-decoracion span { position: fixed; font-size: 7rem; opacity: .12; pointer-events: none; }
 .login-decoracion span:nth-child(1) { top: 6%; left: 7%; transform: rotate(-15deg); }
 .login-decoracion span:nth-child(2) { top: 60%; left: 4%; transform: rotate(12deg); }
@@ -140,7 +141,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .display-6, .fuente-titulo
 .login-contenedor { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1rem; position: relative; }
 .login-logo { display: flex; align-items: center; gap: .75rem; color: #fff; margin-bottom: 1.5rem; }
 .login-logo-icono { width: 56px; height: 56px; border-radius: 14px; background: var(--acento); display: flex; align-items: center; justify-content: center;
-                    font-size: 1.8rem; color: var(--primario-900); box-shadow: 0 4px 12px rgba(0,0,0,.25); }
+                    font-size: 1.8rem; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,.25); }
 .login-logo-texto { font-size: 2.2rem; line-height: 1; font-weight: 300; }
 .login-logo-texto b { font-weight: 700; }
 .login-logo-texto small { display: block; font-size: .8rem; letter-spacing: .5em; opacity: .85; margin-top: .25rem; }
@@ -157,7 +158,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .display-6, .fuente-titulo
 .enlace-login:hover { text-decoration: underline; }
 .login-boton { position: absolute; left: 50%; bottom: -26px; transform: translateX(-50%); width: 52px; height: 52px; border-radius: 50%; border: 0;
                background: var(--primario); color: #fff; font-size: 1.4rem; box-shadow: 0 6px 14px rgba(0,0,0,.25); transition: background .15s; }
-.login-boton:hover { background: var(--acento); color: var(--primario-900); }
+.login-boton:hover { background: var(--acento); color: #fff; }
 .login-volver { color: #DCE8F7; margin-top: 3rem; text-decoration: none; font-size: .9rem; }
 .login-volver:hover { color: #fff; text-decoration: underline; }
 
@@ -181,7 +182,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .display-6, .fuente-titulo
 .btn-usuario { display: flex; align-items: center; gap: .6rem; width: 100%; border: 0; background: none; color: #fff; padding: .4rem; border-radius: 8px; min-width: 0; }
 .btn-usuario:hover { background: rgba(255,255,255,.08); }
 .btn-usuario .texto-barra { min-width: 0; overflow: hidden; }
-.avatar { width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; background: var(--acento); color: var(--primario-900); font-weight: 700;
+.avatar { width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; background: var(--acento); color: #fff; font-weight: 700;
           display: flex; align-items: center; justify-content: center; }
 .texto-barra { white-space: nowrap; transition: opacity .15s; }
 .contenido-admin { flex-grow: 1; min-width: 0; }

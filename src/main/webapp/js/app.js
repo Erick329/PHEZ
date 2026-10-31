@@ -18,13 +18,13 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         document.querySelectorAll('input[name="metodo"]').forEach(function (r) { r.addEventListener('change', actualizar); });
         actualizar();
-
+        // Evita doble envío del pago
         document.getElementById('formCheckout').addEventListener('submit', function () {
             var b = document.getElementById('btnPagar');
             setTimeout(function () { b.disabled = true; b.textContent = 'Procesando pago...'; }, 0);
         });
     }
-
+    
     var barra = document.getElementById('barraLateral');
     var btnContraer = document.getElementById('btnContraer');
     if (barra && btnContraer) {
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         barra.addEventListener('mouseleave', function () {
             if (!barra.querySelector('.dropdown-menu.show')) barra.classList.remove('desplegada');
         });
-
+        
         barra.addEventListener('hidden.bs.dropdown', function () {
             if (!barra.matches(':hover')) barra.classList.remove('desplegada');
         });
@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', function () {
             data: {
                 labels: d.etiquetas,
                 datasets: [
-                    { type: 'bar', label: 'Ventas (Q)', data: d.montos, backgroundColor: '#2F6DB5', borderRadius: 4, yAxisID: 'y' },
-                    { type: 'line', label: 'Pedidos', data: d.pedidos, borderColor: '#F2B134', backgroundColor: '#F2B134', cubicInterpolationMode: 'monotone', yAxisID: 'y1' }
+                    { type: 'bar', label: 'Ventas (Q)', data: d.montos, backgroundColor: '#2F7A6E', borderRadius: 4, yAxisID: 'y' },
+                    { type: 'line', label: 'Pedidos', data: d.pedidos, borderColor: '#D6337F', backgroundColor: '#D6337F', cubicInterpolationMode: 'monotone', yAxisID: 'y1' }
                 ]
             },
             options: {
